@@ -6,6 +6,7 @@ A wrapper class for functions coded by http://google-scraper.squabbel.com/ to sc
 Usage
 =====
 Example :
+```php
 <?php
     $google = new gscrap();
     //set keywords
@@ -21,3 +22,4 @@ Example :
 	*/
     echo $google->getData();
 ?>
+```
