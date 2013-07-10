@@ -1,9 +1,14 @@
 <?php
+/*
+*I don't own this code
+* Real authors are at http://google-scraper.squabbel.com/
+* I converted their code into a class for my project
+*/
 class gscrap{
     //Variables    
     public $isProxyAvailable = false;
-    private $pwd="14071d5e0b3c2d14f5efdd9559d5dea5";  // Your www.seo-proxies.com API password
-    private $uid=7059;                                   // Your www.seo-proxies.com API userid
+    public $pwd="14071d5e0b3c2d14f5efdd9559d5dea5";  // Your www.seo-proxies.com API password
+    public $uid=7059;                                   // Your www.seo-proxies.com API userid
     // The  main keyword and additional sub keywords for the scraping
     public $main_keyword="";              // The main keyword
     public $extra_keywords=""; // alternatives to mix in to receive more than the average 1000 results from Google
