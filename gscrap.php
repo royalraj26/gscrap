@@ -1,7 +1,7 @@
 <?php
 /*
 *I don't own this code
-* Real author JUSTIN ( http://google-scraper.squabbel.com/ )
+* Real author JUSTON ( http://google-scraper.squabbel.com/ )
 * I converted their code into a class for my project
 */
 class gscrap{
