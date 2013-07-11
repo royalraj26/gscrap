@@ -1,9 +1,4 @@
 <?php
-/*
-*I don't own this code
-* Real author JUSTIN ( http://google-scraper.squabbel.com/ )
-* I converted their code into a class for my project
-*/
 class gscrap{
     //Variables    
     public $isProxyAvailable = false;
@@ -216,16 +211,16 @@ class gscrap{
                     // adaption finished
                     $divs=$list->getElementsByTagName('div');
                     $div=$divs->item(1);
-                    $cont="";
-                    $cont=$this->getContent($cont,$div); 
+                    //$cont="";
+                    //$cont=$this->getContent($cont,$div); 
                     $num++;
-                    $result['title']=&$ar['h3']['a']['textContent'];
+                    $result['title']=$ar['h3']['a']['textContent'];
                     $tmp=strstr($ar['h3']['a']['@attributes']['href'],"http");
                     $result['url']=$tmp;
                     if (strstr($ar['h3']['a']['@attributes']['href'],"interstitial")) echo "!";           
                     $tmp=parse_url($result['url']);
-                    $result['host']=$tmp['host'];
-                    if (strstr($cont,"<b >...</b><br >")) // remove some dirt behind the description
+                    $result['host']=$tmp['host'];                    
+                    /*if (strstr($cont,"<b >...</b><br >")) // remove some dirt behind the description
                     {
                         $result['desc']=substr($cont,0,strpos($cont,"<b >...</b><br >"));
                     } else
@@ -234,7 +229,8 @@ class gscrap{
                         $result['desc']=substr($cont,0,strpos($cont,"<span class='f'><cite"));
                     } 
                     else
-                        $result['desc']=$cont;
+                        $result['desc']=$cont;*/
+                    $result['desc']= $ar['div']['span']['textContent'];   
             
                     $this->content.="$this->B Result parsed:$this->B_ $result[title]$this->NL";
                     flush();                    
@@ -267,7 +263,7 @@ class gscrap{
      return $results;
    }  //end of function
    public function getData() {
-       $results = $this->run();           
+       $results = $this->run();                  
        $data="";
        $data.="$this->NL$this->NL";
        $data.="$this->B Scraping of keywords finished$this->B_ $this->NL";
@@ -443,13 +439,17 @@ class gscrap{
     }
 
     function getContent($NodeContent="",$nod)
-    {    
+    {
+            
         $NodList=$nod->childNodes;
+        
         for( $j=0 ;  $j < $NodList->length; $j++ )
         { 
             $nod2=$NodList->item($j);
+            
             $nodemane=$nod2->nodeName;
-            $nodevalue=$nod2->nodeValue;
+            $nodevalue=$nod2->nodeValue;           
+            
             if($nod2->nodeType == XML_TEXT_NODE)
                 $NodeContent .= $nodevalue;
             else
@@ -461,7 +461,7 @@ class gscrap{
                 $this->getContent($NodeContent,$nod2);                    
                 $NodeContent .= "</$nodemane>";
             }
-        }
+        }        
         return $NodeContent;
        
     }
