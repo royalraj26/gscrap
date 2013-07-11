@@ -11,7 +11,7 @@ class gscrap{
     public $max_results=10; 
     public $showAll=1;
     public $getliHTML=0;
-    private $page=0;
+    public $page=0;
     private $PROXY=array();                                                     // after rotate api call it has the elements: [address](proxy host),[port](proxy port),[external_ip](the external IP),[ready](0/1)
     private $results=array();
     private $NL;
@@ -188,9 +188,24 @@ class gscrap{
                 //handle content
                 $output="";
                 $xpath = new DOMXpath($dom);
-                $table_node_list = $xpath->query('//li[@class="g"]');
+                $node_list = $xpath->query('//li[@class="g"]');
                 $temp_dom = new DOMDocument();
-                foreach($table_node_list as $n) $temp_dom->appendChild($temp_dom->importNode($n,true));
+                foreach($node_list as $n)
+                {
+                    /*CHANIGN LINK */                    
+                     $links=$n->getElementsByTagName('a');
+                     $nb = $links->length;                     
+                     for($pos=0; $pos<$nb; $pos++) {
+                          $link = $links->item($pos);
+                          $url=$link->getAttribute("href");
+                         $url =urldecode(preg_replace('/&sa.*/', '', $url));
+                          $url=str_replace("/url?q=", "", $url);                          
+                          $link->setAttribute("href",$url);
+                     }
+                     
+                     //END
+                     $temp_dom->appendChild($temp_dom->importNode($n,true));
+                }
                 $output.=$temp_dom->saveHTML();
                 echo $output;
                 exit;          
