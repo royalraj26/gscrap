@@ -1,9 +1,4 @@
 <?php
-/*
-*I don't own this code
-* Real author JUSTON ( http://google-scraper.squabbel.com/ )
-* I converted their code into a class for my project
-*/
 class gscrap{
     //Variables    
     public $isProxyAvailable = false;
@@ -193,7 +188,8 @@ class gscrap{
                     unset($ar);unset($divs);unset($div);unset($cont);unset($result);unset($tmp);
                     $result['main_keyword']=$this->main_keyword;
                     $result['sub_keyword']=$keyword;
-                    $ar=$this->dom2array_full($list);              
+                    $ar=$this->dom2array_full($list);
+                    
                     if (count($ar) < 2) 
                     {
                         $this->content.="S";
@@ -206,11 +202,11 @@ class gscrap{
                     }
                     // adaption to new google layout
                     //if ($num==2)var_dump($ar);
-                    //if ($num==3)var_dump($ar);
+                    //if ($num==3)var_dump($ar);                    
                     if (isset($ar['div'][1]))
-                        $ar['div']=&$ar['div'][0];
+                        $ar['div']=$ar['div'][0];
                     if (isset($ar['div'][1]))
-                        $ar['div']=&$ar['div'][0];
+                        $ar['div']=$ar['div'][0];
                     //$ar=&$ar['div']['span']; // Google removed the span
                     //$ar=&$ar['div']; // change 2012-2013, commented out again
                     // adaption finished
@@ -220,11 +216,13 @@ class gscrap{
                     //$cont=$this->getContent($cont,$div); 
                     $num++;
                     $result['title']=$ar['h3']['a']['textContent'];
-                    $tmp=strstr($ar['h3']['a']['@attributes']['href'],"http");
+                    $tmp=strstr($ar['h3']['a']['@attributes']['href'],"http");                    
                     $result['url']=$tmp;
                     if (strstr($ar['h3']['a']['@attributes']['href'],"interstitial")) echo "!";           
                     $tmp=parse_url($result['url']);
-                    $result['host']=$tmp['host'];                    
+                    $result['host']=$tmp['host']; 
+                    $result['url'] =urldecode(preg_replace('/&sa.*/', '', $result['url']));                    
+                           
                     /*if (strstr($cont,"<b >...</b><br >")) // remove some dirt behind the description
                     {
                         $result['desc']=substr($cont,0,strpos($cont,"<b >...</b><br >"));
