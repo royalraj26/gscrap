@@ -21,7 +21,12 @@ Example :
 	$google->pwd="YOUR PASSWORD"
 	$google->uid ="YOUR UID"
 	*/
+	/*
+	If $google->getliHTML=true; then Output will be li items just as in from google
+	*/
     echo $google->getData();
 ?>
 ```
+
+
 
