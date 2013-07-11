@@ -10,6 +10,7 @@ class gscrap{
     public $show_html=1;                             // Output either for console or in html for a website (0 / 1)
     public $max_results=10; 
     public $showAll=1;
+    public $getliHTML=0;
     private $page=0;
     private $PROXY=array();                                                     // after rotate api call it has the elements: [address](proxy host),[port](proxy port),[external_ip](the external IP),[ready](0/1)
     private $results=array();
@@ -180,16 +181,28 @@ class gscrap{
                 $dom = new domDocument; 
                 $dom->strictErrorChecking = false; 
                 $dom->preserveWhiteSpace = true; 
-                @$dom->loadHTML($htmdata); 
-                $lists=$dom->getElementsByTagName('li'); 
+                @$dom->loadHTML($htmdata);       
+                $finder = new DomXPath($dom);                       
+                $lists=$dom->getElementsByTagName('li');     
+                if($this->getliHTML) {            
+                //handle content
+                $output="";
+                $xpath = new DOMXpath($dom);
+                $table_node_list = $xpath->query('//li[@class="g"]');
+                $temp_dom = new DOMDocument();
+                foreach($table_node_list as $n) $temp_dom->appendChild($temp_dom->importNode($n,true));
+                $output.=$temp_dom->saveHTML();
+                echo $output;
+                exit;          
+                }
+                //end      
                 $num=0;            
                 foreach ($lists as $list)
                 {
                     unset($ar);unset($divs);unset($div);unset($cont);unset($result);unset($tmp);
                     $result['main_keyword']=$this->main_keyword;
                     $result['sub_keyword']=$keyword;
-                    $ar=$this->dom2array_full($list);
-                    
+                    $ar=$this->dom2array_full($list);                                        
                     if (count($ar) < 2) 
                     {
                         $this->content.="S";
@@ -211,6 +224,7 @@ class gscrap{
                     //$ar=&$ar['div']; // change 2012-2013, commented out again
                     // adaption finished
                     $divs=$list->getElementsByTagName('div');
+                    echo var_dump($ar);                    
                     $div=$divs->item(1);
                     //$cont="";
                     //$cont=$this->getContent($cont,$div); 
@@ -468,7 +482,7 @@ class gscrap{
         return $NodeContent;
        
     }
-
+   
     function dom2array_full($node)
     {
         $result = array();
