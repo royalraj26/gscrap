@@ -1,4 +1,9 @@
 <?php
+/*
+*I don't own this code
+* Real author JUSTON ( http://google-scraper.squabbel.com/ )
+* I converted their code into a class for my project
+*/
 class gscrap{
     //Variables    
     public $isProxyAvailable = false;
